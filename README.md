@@ -13,7 +13,7 @@ jaeles signatures by j3ssie: https://github.com/jaeles-project/jaeles-signatures
 * simple-xss.yaml ```detects reflect XSS with <svg onload=confirm`1`>```
 
 ### Errors and Vulnerabilities
-*  	ErrorsAndVulns.yaml ```detects errors and vulnerabilisies```
+*  	ErrorsAndVulns.yaml ```detects errors and vulnerabilities```
 1. sqli
 2. lfi
 3. ssti
