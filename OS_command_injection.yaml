@@ -41,7 +41,8 @@ requests:
   - redirect: true
   - generators:
       # Change exist content type or adding new one
-      - Query("{{.payload}}")
+      - Query("[[.original]]{{.payload}}")
+      - Path("[[.original]]{{.payload}}")
       
     detections:
       - >-

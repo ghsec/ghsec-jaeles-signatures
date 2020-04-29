@@ -24,4 +24,4 @@ requests:
       - Path("{{.payload}}", "*")
     detections:
       - >-
-        StringSearch("response", "-confirm`1`-")
+        StringSearch("response", "-confirm`1`-") && StatusCode() != 301 && StatusCode() != 302
