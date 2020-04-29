@@ -32,3 +32,9 @@ need change with your payloads and detection string
 
 ### SSTI
 * Template-Injection.yaml
+
+
+Twitter: @[GochaOqradze](https://twitter.com/GochaOqradze)
+
+### Donate me: 
+https://www.paypal.me/Okradze
