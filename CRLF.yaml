@@ -27,7 +27,7 @@ payloads:
 requests:
   - generators:
       - Query("[[.original]]{{.payload}}")
-      - Path("[[.original]]{{.payload}}","*")
+      - Path("[[.original]]/{{.payload}}","*")
     detections:
       - >-
-        StringSearch("resHeader", "Set-Cookie: crlf=injection")
+        StringSearch("resHeader", "(?m)^Set-Cookie: crlf=injection")
