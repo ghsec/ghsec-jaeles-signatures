@@ -4,9 +4,14 @@ info:
   name: SSRF
   risk: High
 
+# jaeles scan -p 'dest=xx.burpcollaborator.net' ...
+params:
+  - dest: '{{.oob}}'
+
 payloads: 
-  - http://d066a52d.ngrok.io/ssrf.txt
-  - d066a52d.ngrok.io/ssrf.txt
+  - "http://{{.dest}}"
+  - "{{.dest}}/ssrf.txt"
+  - "{{.dest}}"
 
 requests:
   - redirect: true
