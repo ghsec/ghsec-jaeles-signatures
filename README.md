@@ -21,9 +21,12 @@ jaeles signatures by j3ssie: https://github.com/jaeles-project/jaeles-signatures
 
 ### SSRF
 * ssrf.yaml 
-need change with your payloads and detection string
+need run with -p flag
+
+Example: ```jaeles scan -u http://example.com/path?param=something -s ssrf.yaml -p "dest=yourServer" ```
 
 ### LFI
+
 * lfi-Unix.yaml
 * lfi-windows.yaml
 
