@@ -9,7 +9,7 @@ jaeles signatures by j3ssie: https://github.com/jaeles-project/jaeles-signatures
 
 ### Signatures: 
 #### Reflect XSS
-* js-xss.yaml ```detects reflect XSS in js code```
+* js-xss.yaml ```detects reflect XSS in js code and reflection in tags```
 * simple-xss.yaml ```detects reflect XSS with <xsshere>```
 
 ### Errors and Vulnerabilities
