@@ -49,4 +49,4 @@ requests:
       - >-
         StringSearch("response", "313374")
       - >-
-        ResponeTime() > 2 && ResponeTime() > 4
+        ResponeTime() > 2 && ResponeTime() < 4
