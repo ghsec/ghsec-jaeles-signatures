@@ -4,6 +4,7 @@ type: fuzz
 info:
   name: OS Commaind Injection Fuzz
   risk: High
+  Author: Gocha Okradze
 
 # origin: gonna come from Burp
 payloads:
@@ -48,4 +49,4 @@ requests:
       - >-
         StringSearch("response", "313374")
       - >-
-        ResponeTime() > 2
+        ResponeTime() > 2 && ResponeTime() > 4
