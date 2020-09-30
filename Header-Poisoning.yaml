@@ -1,0 +1,34 @@
+# info to search signature
+
+### add to all url "?YourRendomeString"
+### Example: http://example.com/?something
+  
+### Header Poisoning: If this vuln detected by signature change payload by XSS payload.
+reference:
+  - link: https://brutelogic.com.br/blog/xss-via-http-headers/
+
+id: Header-Based-XSS
+type: fuzz
+info:
+  name: Header Based XSS
+  risk: Medium
+  
+payloads:
+  - <xsshere>
+  - aaa\"xssHere\"
+  - aaa\'xssHere\'
+
+requests:
+  - generators:
+      - Header("{{.payload}}", "injectX")
+    detections:
+      - >-
+        StatusCode() != 301 && StatusCode() != 302 && StringSearch("resBody", '<xsshere>') && StringSearch("resHeaders", "Content-Type: text/html")
+      - >-
+        StringSearch("resHeaders", "Content-Type: text/html") && StringSearch("resBody", 'aaa"xssHere""') && StatusCode() != 301 && StatusCode() != 302
+      - >-
+        StringSearch("resHeaders", "Content-Type: text/html") && StringSearch("resBody", "aaa'xssHere''") && StatusCode() != 301 && StatusCode() != 302
+      - >-
+        RegexSearch("resHeaders", "(?m)^injectX: ")
+        
+
