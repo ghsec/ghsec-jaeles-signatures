@@ -20,5 +20,99 @@ requests:
       - Cookie("[[.original]]{{.payload}}")
       
     detections:
+      # Cache
       - >-
-        RegexSearch("resBody", "com\.sybase\.jdbc|SQLite3::SQLException|org\.sqlite\.JDBC|Pdo[./_\\]Sqlite|SQLiteException|Warning.*?\Wsybase_|Sybase message|Sybase.*?Server message|SybSQLException|Sybase\.Data\.AseClient|(Microsoft|System)\.Data\.SQLite\.SQLiteException|Warning.*?\W(sqlite_|SQLite3::)|\[SQLITE_ERROR\]|SQLite error \d+:|sqlite3.OperationalError:|PSQLException|SQL error.*?POS([0-9]+)|Warning.*?\Wmaxdb_|DriverSapDB|com\.sap\.dbtech\.jdbc|SQLite/JDBCDriver|SQLite\.Exception|org\.postgresql\.util\.PSQLException|ERROR:\s\ssyntax error at or near|ERROR: parser: parse error at or near|PostgreSQL query failed|org\.postgresql\.jdbc|Pdo[./_\\]Pgsql|quoted string not properly terminated|SQL command not properly ended|macromedia\.jdbc\.oracle|oracle\.jdbc|Zend_Db_(Adapter|Statement)_Oracle_Exception|Pdo[./_\\](Oracle|OCI)|OracleException|PostgreSQL.*?ERROR|Warning.*?\Wpg_|valid PostgreSQL result|Npgsql\.|PG::SyntaxError:|MySqlClient\.|com\.mysql\.jdbc|Zend_Db_(Adapter|Statement)_Mysqli_Exception|Pdo[./_\\]Mysql|MySqlException|\bORA-\d{5}|Oracle error|Oracle.*?Driver|Warning.*?\W(oci|ora)_|MySQLSyntaxErrorException|valid MySQL result|check the manual that corresponds to your (MySQL|MariaDB) server version|Unknown column '[^ ]+' in 'field list'|SQL(Srv|Server)Exception|SQL syntax.*?MySQL|Warning.*?\Wmysqli?_|Zend_Db_(Adapter|Statement)_Sqlsrv_Exception|com\.microsoft\.sqlserver\.jdbc|Pdo[./_\\](Mssql|SqlSrv)|SQLServer JDBC Driver|com\.jnetdirect\.jsql|macromedia\.jdbc\.sqlserver|\[SQL Server\]|ODBC SQL Server Driver|ODBC Driver \d+ for SQL Server|Microsoft SQL Native Client error '[0-9a-fA-F]{8}|System\.Data\.SqlClient\.SqlException|(?s)Exception.*?\bRoadhouse\.Cms\.|SQL Server.*[0-9a-fA-F]{8}|Warning.*?\W(mssql|sqlsrv)_|JET Database Engine|Access Database Engine|ODBC Microsoft Access|Syntax error \(missing operator\) in query expression|Driver.*? SQL.*Server|OLE DB.*? SQL Server|Dynamic SQL Error|Warning.*?\Wibase_|org\.firebirdsql\.jdbc|Firebird|Microsoft Access (\d+ )?Driver|Informix|IfxException|Warning.*?\Wingres_|Ingres SQLSTATE|Ingres\W.*?Driver|com\.ingres\.gcf\.jdbc|com\.informix\.jdbc|weblogic\.jdbc\.informix|Exception.*?Informix|Informix ODBC Driver|ODBC Informix driver|Warning.*?\Wifx_|DB2Exception|Pdo|com\.ibm\.db2\.jcc|Zend_Db_(Adapter|Statement)_Db2_Exception|SQLSTATE.+SQLCODE|\bdb2_\w+|CLI Driver.*?DB2|org\.hsqldb\.jdbc|Unexpected token.*?in statement|Unexpected end of command in statement|org\.h2\.jdbc|com\.frontbase\.jdbc|Exception (condition )?\d+\. Transaction rollback|System\.Data\.SqlClient\.SqlException|DB2 SQL error")
+        RegexSearch("resBody", "encountered after end of query|A comparison operator is required here")
+      
+      # CrateDB
+      - >-
+        RegexSearch("resBody", "io\.crate\.client\.jdbc")
+      
+      # MimerSQL
+      - >-
+        RegexSearch("resBody", "com\.mimer\.jdbc|Syntax error,[^\n]+assumed to mean")
+      
+      # Altibase
+      - >-
+        RegexSearch("resBody", "Altibase\.jdbc\.driver")
+      
+      # Presto
+      - >-
+        RegexSearch("resBody", "com\.facebook\.presto\.jdbc|io\.prestosql\.jdbc|com\.simba\.presto\.jdbc|UNION query has different number of fields: [0-9]+, [0-9]+")
+      
+      # Mckoi
+      - >-
+        RegexSearch("resBody", "com\.mckoi\.JDBCDriver|com\.mckoi\.database\.jdbc|&lt;REGEX_LITERAL&gt;")
+      
+      # Vertica
+      - >-
+        RegexSearch("resBody", ", Sqlstate: (3F|42).{3}, (Routine|Hint|Position):|/vertica/Parser/scan|com\.vertica\.jdbc|org\.jkiss\.dbeaver\.ext\.vertica|com\.vertica\.dsi\.dataengine")
+      
+      # Apache Derby
+      - >-
+        RegexSearch("resBody", "Syntax error: Encountered|org\.apache\.derby|ERROR 42X01")
+      
+      # MonetDB
+      - >-
+        RegexSearch("resBody", "![0-9]{5}![^\n]+(failed|unexpected|error|syntax|expected|violation|exception)|\[MonetDB\]\[ODBC Driver|nl\.cwi\.monetdb\.jdbc")
+      
+      # H2
+      - >-
+        RegexSearch("resBody", "org\.h2\.jdbc")
+      
+      # HSQLDB
+      - >-
+        RegexSearch("resBody", "Unexpected end of command in statement \[|Unexpected token.*?in statement \[|org\.hsqldb\.jdbc")
+      
+      # FrontBase
+      - >-
+        RegexSearch("resBody", "Exception (condition )?[0-9]+\. Transaction rollback|com\.frontbase\.jdbc|Syntax error 1. Missing|(Semantic|Syntax) error [1-4][0-9]{2}\.")
+      
+      # Ingres
+      - >-
+        RegexSearch("resBody", "Warning.*?\Wingres_|Ingres SQLSTATE|Ingres\W.*?Driver|com\.ingres\.gcf\.jdbc")
+      
+      # Sybase
+      - >-
+        RegexSearch("resBody", "Warning.*?\Wsybase_|Sybase message|Sybase.*?Server message|SybSQLException|Sybase\.Data\.AseClient|com\.sybase\.jdbc")
+      
+      # SAP MaxDB
+      - >-
+        RegexSearch("resBody", "SQL error.*?POS([0-9]+)|Warning.*?\Wmaxdb_|DriverSapDB|-3014.*?Invalid end of SQL statement|com\.sap\.dbtech\.jdbc|\[-3008\].*?: Invalid keyword or missing delimiter")
+      
+      # SQLite
+      - >-
+        RegexSearch("resBody", "SQLite/JDBCDriver|SQLite\.Exception|(Microsoft|System)\.Data\.SQLite\.SQLiteException|Warning.*?\W(sqlite_|SQLite3::)|SQLite error [0-9]{1,}:|sqlite3.OperationalError:|SQLite3::SQLException|org\.sqlite\.JDBC|SQLiteException")
+      
+      # Firebird
+      - >-
+        RegexSearch("resBody", "Dynamic SQL Error|Warning.*?\Wibase_|org\.firebirdsql\.jdbc")
+      
+      # Informix
+      - >-
+        RegexSearch("resBody", "Warning.*?\Wifx_|Exception.*?Informix|Informix ODBC Driver|ODBC Informix driver|com\.informix\.jdbc|weblogic\.jdbc\.informix|IfxException")
+      
+      # IBM DB2
+      - >-
+        RegexSearch("resBody", "CLI Driver.*?DB2|DB2 SQL error|\bdb2_\w+\(|SQLCODE[=:\d, -]+SQLSTATE|com\.ibm\.db2\.jcc|Zend_Db_(Adapter|Statement)_Db2_Exception|DB2Exception|ibm_db_dbi\.ProgrammingError")
+      
+      # Oracle
+      - >-
+        RegexSearch("resBody", "\bORA-\d{5}|Oracle error|Oracle.*?Driver|Warning.*?\W(oci|ora)_|quoted string not properly terminated|SQL command not properly ended|macromedia\.jdbc\.oracle|oracle\.jdbc|Zend_Db_(Adapter|Statement)_Oracle_Exception|OracleException")
+      
+      # Microsoft Access
+      - >-
+        RegexSearch("resBody", "Microsoft Access ([0-9]+ )?Driver|JET Database Engine|Access Database Engine|ODBC Microsoft Access|Syntax error \(missing operator\) in query expression")
+      
+      # Microsoft SQL Server
+      - >-
+        RegexSearch("resBody", "Driver.*? SQL[\-\_\ ]*Server|OLE DB.*? SQL Server|\bSQL Server[^&lt;&quot;]+Driver|Warning.*?\W(mssql|sqlsrv)_|\bSQL Server[^&lt;&quot;]+[0-9a-fA-F]{8}|System\.Data\.SqlClient\.SqlException|(?s)Exception.*?\bRoadhouse\.Cms\.|Microsoft SQL Native Client error '[0-9a-fA-F]{8}|ODBC SQL Server Driver|ODBC Driver \d+ for SQL Server|SQLServer JDBC Driver|com\.jnetdirect\.jsql|macromedia\.jdbc\.sqlserver|Zend_Db_(Adapter|Statement)_Sqlsrv_Exception|com\.microsoft\.sqlserver\.jdbc|SQL(Srv|Server)Exception")
+      
+      # MySql
+      - >-
+        RegexSearch("resBody", "check the manual that (corresponds to|fits) your MySQL server version|SQL syntax.*?MySQL|Warning.*?\Wmysqli?_|MySQLSyntaxErrorException|valid MySQL result|check the manual that (corresponds to|fits) your MariaDB server version\" fork=\"MariaDB|check the manual that (corresponds to|fits) your Drizzle server version\" fork=\"Drizzle|Unknown column '[^ ]+' in 'field list'|MySqlClient\.|com\.mysql\.jdbc|Zend_Db_(Adapter|Statement)_Mysqli_Exception|MySqlException|SQLSTATE\[\d+\]: Syntax error or access violation|MemSQL does not support this type of query\" fork=\"MemSQL|is not supported by MemSQL\" fork=\"MemSQL|unsupported nested scalar subselect\" fork=\"MemSQL")
+        
+      
+      # PostgreSQL
+      - >-
+        RegexSearch("resBody", "PostgreSQL.*?ERROR|Warning.*?\Wpg_|valid PostgreSQL result|Npgsql\.|PG::SyntaxError:|org\.postgresql\.util\.PSQLException|ERROR:\s\ssyntax error at or near|ERROR: parser: parse error at or near|PostgreSQL query failed|org\.postgresql\.jdbc|PSQLException")
