@@ -4,21 +4,17 @@ type: fuzz
 info:
   name: Open Redirect
   risk: Low
-
 # jaeles scan -p 'dest=example.com' or -p 'dest=http://example.com' or ...
 params:
   - dest: '{{.oob}}'
-
 variables:
   - prefix: |
       /
       //
       ///
       ///;@
-
 payloads:
-  - "{{.dest}}"
-
+  - "{{.Domain}}.{{.dest}}/{{.URL}}"
 requests:
   - method: GET
   - generators:
@@ -27,6 +23,8 @@ requests:
       - Path("{{.payload}}", "*")
       - Query("{{.prefix}}{{.payload}}")
       - Query("{{.payload}}")
+      - Body("{{.payload}}")
     detections:
       - >-
-        RegexSearch("resHeaders", "(?m)^(L|l)ocation: ((http|https)://)?{{.dest}}")
+        RegexSearch("resHeaders", "(?m)^(L|l)ocation: (((http|https):)({{.prefix}})?)?{{.dest}}")
+      - RegexSearch("ResBody", ".*?; *?URL *?= *?(.*)|window\.location(\s=\s|\.href|\.replace)?(\(|\s=\s)?({.{payloads}}))")
