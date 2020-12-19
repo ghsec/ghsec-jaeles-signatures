@@ -9,6 +9,8 @@ params:
   - dest: '{{.oob}}'
 variables:
   - prefix: |
+      http://
+      https://
       /
       //
       ///
@@ -27,4 +29,5 @@ requests:
     detections:
       - >-
         RegexSearch("resHeaders", "(?m)^(L|l)ocation: (((http|https):)?({{.prefix}})?)?{{.dest}}")
-      - RegexSearch("ResBody", ".*?; *?URL *?= *?(.*)|window\.location(\s=\s|\.href|\.replace)?(\(|\s=\s)?({.{payloads}}))")
+      - >-
+        RegexSearch("ResBody", "(?m)<meta.*{{.dest}}")
