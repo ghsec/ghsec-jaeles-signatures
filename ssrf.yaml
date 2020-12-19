@@ -10,7 +10,6 @@ params:
 
 payloads: 
   - "http://{{.dest}}"
-  - "{{.dest}}/ssrf.txt"
   - "{{.dest}}"
 
 requests:
@@ -21,5 +20,4 @@ requests:
 
   - detections:
       - >-
-        StringSearch("response", "ssrfhere")
-
+        RegexSearch("Resbody", "(?m)<html><body>[a-z0-9]+</body>")
