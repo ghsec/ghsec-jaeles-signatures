@@ -11,7 +11,7 @@ payloads:
     
 requests:
   - redirect: true
-  - generators:
+    generators:
       # Change exist content type or adding new one
       - Query("[[.original]]{{.payload}}")
       - Path("[[.original]]{{.payload}}", "*")
