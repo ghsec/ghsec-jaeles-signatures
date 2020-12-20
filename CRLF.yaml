@@ -1,7 +1,7 @@
 id: CRLF-Injection-Fuzz
 type: fuzz
 info:
-  Author: Gocha Okradze
+  Author: "@GochaOradze"
   name: CRLF Injection
   risk: High
 
