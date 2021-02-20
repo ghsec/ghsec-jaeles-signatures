@@ -17,9 +17,9 @@ requests:
     url: >-
      {{.URL}}?{{.randString}}
     headers:
-    - newHeader: <xssHere> 
+    - Jaeles: <xssHere> 
     detections:
       - >-
         StringSearch("resHeaders", "Content-Type: text/html") && StringSearch("resBody", "<xssHere>") && StatusCode() != 301 && StatusCode() != 302
       - >-
-        RegexSearch("resHeaders", "(?m)^injectX: <xssHere>")
+        RegexSearch("resHeaders", "(?m)^Jaeles: <xssHere>")
