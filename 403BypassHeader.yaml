@@ -4,7 +4,19 @@ info:
   Author: Gocha Okradze
   name: Header Based 403 Status Code Bypass
   risk: High
+
+params:
+  - root: "{{.BaseURL}}"
+
+origin:
+  method: GET
+  redirect: false
+  headers:
+    - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+  url: >-
+    {{.root}}
   
+
 variables:
   - head: |
       X-Custom-IP-Authorization
@@ -21,4 +33,5 @@ requests:
   - generators:
       - Header("{{.payload}}", "{{.head}}")
     detections:
-        - StatusCode() == 200
+        - Diff() && StatusCode() == 200 && (OriginStatusCode() == 403 || OriginStatusCode() == 401)
+
