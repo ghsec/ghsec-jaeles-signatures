@@ -6,7 +6,7 @@ info:
   risk: High
 
 params:
-  - root: "{{.BaseURL}}"
+  - root: "{{.URL}}"
 
 origin:
   method: GET
