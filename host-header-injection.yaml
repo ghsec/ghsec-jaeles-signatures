@@ -23,3 +23,5 @@ requests:
     detections:
       - >-
         RegexSearch("resHeaders", "(?m)^(L|l)ocation: ((http|https)://)?{{.dest}}")
+      - >-
+        RegexSearch("Resbody", "(?m)<html><body>[a-z0-9]+</body>")
