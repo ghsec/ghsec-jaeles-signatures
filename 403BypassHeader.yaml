@@ -26,6 +26,7 @@ variables:
       X-Client-IP
       X-Host
       X-Forwarded-Host
+      X-Forwarded-Origin
 
 payloads: 
   - "127.0.0.1"        
