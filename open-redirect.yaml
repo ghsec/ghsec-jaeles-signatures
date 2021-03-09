@@ -4,30 +4,39 @@ type: fuzz
 info:
   name: Open Redirect
   risk: Low
-# jaeles scan -p 'dest=example.com' or -p 'dest=http://example.com' or ...
+# jaeles scan -p 'dest=example.com' or -p 'dest=example.com' or ...
 params:
   - dest: '{{.oob}}'
 variables:
   - prefix: |
       http://
       https://
-      /
       //
       ///
       ///;@
+
+  - sufix: |
+      /
+      ./
+      /.;/
+      /dummy/../
+      /dummy/..;/
+
 payloads:
-  - "{{.Domain}}.{{.dest}}/{{.URL}}"
+  - "{{.dest}}"
+
 requests:
-  - method: GET
   - generators:
-      - Path("[[.origin]]{{.prefix}}{{.payload}}", "*")
       - Path("{{.prefix}}{{.payload}}", "*")
+      - Path("{{.prefix}}{{.payload}}{{.sufix}}", "*")
       - Path("{{.payload}}", "*")
       - Query("{{.prefix}}{{.payload}}")
+      - Query("{{.prefix}}{{.payload}}{{.sufix}}")
       - Query("{{.payload}}")
       - Body("{{.payload}}")
+
     detections:
       - >-
-        RegexSearch("resHeaders", "(?m)^(L|l)ocation: (((http|https):)?({{.prefix}})?)?{{.dest}}")
+        RegexSearch("resHeaders", "(?m)^(L|l)ocation: {{.prefix}}{{.payload}}")
       - >-
-        RegexSearch("ResBody", "(?m)<meta http-equiv(.*?)url(\s)?=(\'|\")?(.*?){{.dest}}(.*?)>")
+        RegexSearch("ResBody", "(?m)<meta http-equiv="refresh".*{{.dest}} />")
