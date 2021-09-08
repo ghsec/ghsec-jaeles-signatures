@@ -1,0 +1,29 @@
+id: template-injection
+type: fuzz
+level: 1
+info:
+  name: template injection
+  risk: Medium
+
+
+variables:
+  - name: File("params.txt")
+
+payloads:
+  - >-
+    <\%= 123 * 421 \%>inject
+  - >-
+    #{ 123 * 421 }inject
+  - >-
+    {{123*421}}inject
+  - >-
+    \${123*421}inject
+  - >-
+    \${{123*421}}inject
+
+requests:
+  - generators:
+      - Query("{{.payload}}", "{{.name}}")
+    detections:
+      - >-
+        StringSearch("response", "51783inject")

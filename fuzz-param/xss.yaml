@@ -1,0 +1,28 @@
+id: xss
+type: fuzz
+level: 1
+info:
+  name: XSS
+  risk: Medium
+
+
+variables:
+  - name: File("params.txt")
+
+payloads:
+  - >-
+    'xsshere
+  - >-
+    <xsshere>
+  - >-
+    \"xsshere
+  - >-
+    \`xsshere
+
+requests:
+  - generators:
+      - Query("{{.payload}}", "{{.name}}")
+    detections:
+      - >-
+        StringSearch("resHeaders", "text/html") && RegexSearch("ResBody", "(?i)(''|\"\"|\`\`)xsshere|<xsshere>") && StatusCode() != 301 && StatusCode() != 302
+
