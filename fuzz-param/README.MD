@@ -16,7 +16,7 @@ https://github.com/tomnomnom/hacks/tree/master/htmlattribs
 checkparam(){
 for i in $(cat $1); do
         curl -sk "$i" | htmlattribs name input | tee params.txt
-        jaeles scan -v -s ~/path_To_Jaeles_Signature/xss.yaml -u "$i"
+        jaeles scan -v -s ~/path_To_Jaeles_Signature/.* -p "dest=Your_Collaborator_Server" -u "$i"
         rm params.txt
 done
 }
