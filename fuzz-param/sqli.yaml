@@ -53,7 +53,7 @@ requests:
       
       # MonetDB
       - >-
-        RegexSearch("resBody", "![0-9]{5}![^\n]+(failed|unexpected|error|syntax|expected|violation|exception)|\[MonetDB\]\[ODBC Driver|nl\.cwi\.monetdb\.jdbc")
+        RegexSearch("resBody", "![0-9]{5}![^\\n]+(failed|unexpected|error|syntax|expected|violation|exception)|\\[MonetDB\\]\\[ODBC Driver|nl\.cwi\.monetdb\.jdbc")
       
       # H2
       - >-
@@ -61,7 +61,7 @@ requests:
       
       # HSQLDB
       - >-
-        RegexSearch("resBody", "Unexpected end of command in statement \[|Unexpected token.*?in statement \[|org\.hsqldb\.jdbc")
+        RegexSearch("resBody", "Unexpected end of command in statement \\[|Unexpected token.*?in statement \\[|org\.hsqldb\.jdbc")
       
       # FrontBase
       - >-
@@ -93,7 +93,7 @@ requests:
       
       # IBM DB2
       - >-
-        RegexSearch("resBody", "CLI Driver.*?DB2|DB2 SQL error|\bdb2_\w+\(|SQLCODE[=:\d, -]+SQLSTATE|com\.ibm\.db2\.jcc|Zend_Db_(Adapter|Statement)_Db2_Exception|DB2Exception|ibm_db_dbi\.ProgrammingError")
+        RegexSearch("resBody", "CLI Driver.*?DB2|DB2 SQL error|db2_\w+\\(|SQLCODE[=:\d, -]+SQLSTATE|com\.ibm\.db2\.jcc|Zend_Db_(Adapter|Statement)_Db2_Exception|DB2Exception|ibm_db_dbi\.ProgrammingError")
       
       # Oracle
       - >-
@@ -115,4 +115,3 @@ requests:
       # PostgreSQL
       - >-
         RegexSearch("resBody", "PostgreSQL.*?ERROR|Warning.*?\Wpg_|valid PostgreSQL result|Npgsql\.|PG::SyntaxError:|org\.postgresql\.util\.PSQLException|ERROR:\s\ssyntax error at or near|ERROR: parser: parse error at or near|PostgreSQL query failed|org\.postgresql\.jdbc|PSQLException")
-
