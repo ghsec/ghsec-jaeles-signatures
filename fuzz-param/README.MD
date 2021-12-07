@@ -36,7 +36,7 @@ ffuf -u FUZZ -w urls.txt -mr "<input" -s | tee crawled.txt
 checkparam crawled.txt
 ```
 
-### js hidden variable, check fro reflect xss
+### js hidden variable, check for vulns
 
 ```
 ### Check hidden parameters collected from js code for reflect xss
