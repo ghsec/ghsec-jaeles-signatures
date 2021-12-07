@@ -16,7 +16,7 @@ https://github.com/tomnomnom/hacks/tree/master/htmlattribs
 checkparam(){
 for i in $(cat $1); do
         curl -sk "$i" | htmlattribs name input | tee params.txt
-        jaeles scan -v -s ~/path_To_Jaeles_Signature/.* -u "$i"
+        jaeles scan -v -s ~/path_To_Jaeles_Signature/.* -p "Your_Collaborator_Here" -u "$i"
         rm params.txt
 done
 }
@@ -44,7 +44,7 @@ jsvar(){
         cat urls | grep -vE ".(js$|js\?)" | ffuf -u FUZZ -w - -mr "var [a-zA-Z0-9_-]{1,}" | tee var_urls
 	for i in $(cat var_urls); do
 		curl -sk $i | grep -Eo "var [a-zA-Z0-9_-]{1,}" | cut -d " " -f2 | sort -u | tee params.txt
-		jaeles scan -v -s ~/path_To_Jaeles_Signature/.* -u "$i"
+		jaeles scan -v -s ~/path_To_Jaeles_Signature/.* -p "Your_Collaborator_here" -u "$i"
 		rm params.txt
 		done
 }
