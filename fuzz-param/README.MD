@@ -39,7 +39,7 @@ checkparam crawled.txt
 ### js hidden variable, check for vulns
 
 ```
-### Check hidden parameters collected from js code for reflect xss
+### crawl hidden parameters collected from js code and scan
 jsvar(){
         cat urls | grep -vE ".(js$|js\?)" | ffuf -u FUZZ -w - -mr "var [a-zA-Z0-9_-]{1,}" | tee var_urls
 	for i in $(cat var_urls); do
