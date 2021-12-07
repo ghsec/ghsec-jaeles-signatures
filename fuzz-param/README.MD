@@ -41,7 +41,7 @@ checkparam crawled.txt
 ```
 ### crawl hidden parameters collected from js code and scan
 jsvar(){
-        cat urls | grep -vE ".(js$|js\?)" | ffuf -u FUZZ -w - -mr "var [a-zA-Z0-9_-]{1,}" | tee var_urls
+        cat urls | grep -vE ".(js$|js\?)" | ffuf -u FUZZ -w - -s -mr "var [a-zA-Z0-9_-]{1,}" | tee var_urls
 	for i in $(cat var_urls); do
 		curl -sk $i | grep -Eo "var [a-zA-Z0-9_-]{1,}" | cut -d " " -f2 | sort -u | tee params.txt
 		jaeles scan -v -s ~/path_To_Jaeles_Signature/.* -p "Your_Collaborator_here" -u "$i"
