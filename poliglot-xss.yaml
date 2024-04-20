@@ -4,7 +4,7 @@ type: fuzz
 info:
   name: DOM Based XSS
   risk: High
-  author: "@GochaOqradze"
+  author: "@GochaOqradze", @BRuteLogic, @RodoAssis
 
 # origin: gonna come from Burp
 variables:
